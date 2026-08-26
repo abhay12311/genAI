@@ -1,6 +1,11 @@
 import speech_recognition as sr
 import pyttsx3
 import webbrowser
+import json
+
+with open("databse.json", "r") as f:
+    website = json.load(f)
+
 
 # print("Welcome to the Speech Recognition Program!")
 
@@ -35,6 +40,26 @@ def takecommand():
         print("Sorry, I did not catch that,")
         return ""
 
+# if __name__ == "__main__":
+#     print("JARVIS:")
+#     say("JARVIS is now online. How can I assist you?")
+
+#     while 1:
+#         print("Listening")
+#         text = takecommand()
+#         # say(text)
+#         # print("you said: "+ text)
+
+#         if "exit" in text or "quit" in text:
+#             say("Goodbye!")
+#             break
+
+#         if "open youtube".lower() in text.lower():
+#             say("Opening YouTube")
+#             webbrowser.open("https://www.youtube.com")
+#             break
+
+
 if __name__ == "__main__":
     print("JARVIS:")
     say("JARVIS is now online. How can I assist you?")
@@ -42,17 +67,12 @@ if __name__ == "__main__":
     while 1:
         print("Listening")
         text = takecommand()
-        # say(text)
-        # print("you said: "+ text)
 
         if "exit" in text or "quit" in text:
             say("Goodbye!")
             break
 
-        if "open youtube".lower() in text.lower():
-            say("Opening YouTube")
-            webbrowser.open("https://www.youtube.com")
-            break
-
-
-    
+        for key in website.keys():
+            if key in text.lower():
+                say(f"Opening {key}")
+                webbrowser.open(website[key])   

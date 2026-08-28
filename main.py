@@ -2,9 +2,21 @@ import speech_recognition as sr
 import pyttsx3
 import webbrowser
 import json
+import os
+import subprocess
 
-with open("databse.json", "r") as f:
-    website = json.load(f)
+with open("database.json", "r") as f:
+    database = json.load(f)
+
+website = database["websites"]
+apps = database["apps"]
+
+
+# with open("databse.json", "r") as f:
+#     website = json.load(f) 
+
+# with open("apps.json", "r") as f:
+#     apps = json.load(f)     
 
 
 # print("Welcome to the Speech Recognition Program!")
@@ -72,7 +84,27 @@ if __name__ == "__main__":
             say("Goodbye!")
             break
 
-        for key in website.keys():
-            if key in text.lower():
-                say(f"Opening {key}")
-                webbrowser.open(website[key])   
+        found = False
+
+        for app in apps:
+            if app["Name"].lower() in text.lower():
+                say(f"Opening {app['Name']}")
+
+                subprocess.Popen([
+                    "explorer.exe",
+                    f"shell:AppsFolder\\{app['AppID']}"
+                ])  
+
+                found = True
+                break
+
+        if not found:
+            for key in website:
+                if key.lower() in text.lower():
+                    say(f"Opening {key}")
+                    webbrowser.open(website[key])
+                    found = True
+                    break
+
+        if not found:
+            say("Sorry, I could not find.")        

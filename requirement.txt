@@ -1,0 +1,5 @@
+json
+webbrowser
+subprocess
+SpeechRecognition
+pyttsx3

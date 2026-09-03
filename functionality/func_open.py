@@ -4,41 +4,52 @@ import json
 import os
 from voice.say import say
 
-with open("database.json", "r") as f:
+database_path = os.path.join(os.path.dirname(__file__), "database.json")
+
+with open(database_path, "r") as f:
     database = json.load(f)
 
 website = database["websites"]
 apps = database["apps"]
 
-def open_app(text,apps):
-    for app in apps:
-        if app["Name"].lower() in text.lower():
-            say(f"Opening {app['Name']}")
-            subprocess.Popen([
-                "explorer.exe",
-                f"shell:AppsFolder\\{app['AppID']}"
-            ])
-            return f"Opening {app['Name']}"
-        
-        say("Sorry, I could not find the app.")    
+def open_app(text):
+    try:
+        for app in apps:
+            if app["Name"].lower() in text.lower():
+                say(f"Opening {app['Name']}")
+                subprocess.Popen([
+                    "explorer.exe",
+                    f"shell:AppsFolder\\{app['AppID']}"
+                ])
+                return
 
-def open_website(text,website):
-    for key in website.keys():
-        if key.lower() in text.lower():
-            say(f"Opening {key}")
-            webbrowser.open(website[key])
-            return f"Opening {key}"
-        
-        say("Sorry, I could not find the website.")    
+            return say("Sorry, I could not find the app.")    
 
-def  open(text, apps, website):
+    except Exception as e:
+        say(f"An error occurred while trying to open the app: {str(e)}")
+        return        
 
-    text = text.lower()
+def open_website(text):
+    try:
+        for key in website.keys():
+            if key.lower() in text.lower():
+                say(f"Opening {key}")
+                webbrowser.open(website[key])
+                return 
 
-    if "open app" in text or "app" in text:
-        return open_app(text, apps)
-    elif "open website" in text or "website" in text:
-        return open_website(text, website) 
+        return say("Sorry, I could not find the website.") 
+
+    except Exception as e:
+        say(f"An error occurred while trying to open the website: {str(e)}")
+        return   
+
+def  open(text):
+    if "app" in text.lower():
+        return open_app(text)
+    elif "website" in text.lower():
+        return open_website(text) 
+    else:
+        return say("Please specify whether you want to open an app or a website.")
               
 
       

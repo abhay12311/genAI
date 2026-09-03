@@ -1,8 +1,6 @@
-import json
 from voice.say import say
 from voice.listen import takecommand
-import functionality.func_open as func_open
-
+from functionality import func_open
 
 if __name__ == "__main__":
     print("JARVIS:")
@@ -13,13 +11,13 @@ if __name__ == "__main__":
         text = takecommand()
         result = None
 
-        if "exit" in text or "quit" in text:
+        if "exit" in text.lower():
             say("Goodbye!")
             break
 
-        elif "open" in text:
-            result = func_open.open(text, apps, website) 
-
-        say(f"result: {result}")    
+        elif "open" in text.lower():
+            result = func_open.open(text) 
+        else:
+            say("sorry, I couldn't find any results for your request.")
 
                     

@@ -23,7 +23,7 @@ def open_app(text):
                 ])
                 return
 
-            return say("Sorry, I could not find the app.")    
+        return say("Sorry, I could not find the app.")    
 
     except Exception as e:
         say(f"An error occurred while trying to open the app: {str(e)}")

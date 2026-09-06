@@ -18,6 +18,6 @@ if __name__ == "__main__":
         elif "open" in text.lower():
             result = func_open.open(text) 
         else:
-            say("sorry, I couldn't find any results for your request.")
+            print("sorry, I couldn't find any results for your request.")
 
                     
